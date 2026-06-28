@@ -1,0 +1,79 @@
+name: flutter_boilerplate
+description: A production-ready Flutter boilerplate with Clean Architecture, GetX, Dio, Firebase, theming, localization, and CI/CD.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ^3.11.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State management, DI, routing, storage
+  get: ^4.6.6
+  get_storage: ^2.1.1
+
+  # Networking
+  dio: ^5.7.0
+  pretty_dio_logger: ^1.4.0
+
+  # Firebase
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+  cloud_firestore: ^5.4.4
+  firebase_analytics: ^11.3.3
+  firebase_crashlytics: ^4.1.3
+  firebase_messaging: ^15.1.3
+
+  # UI
+  cupertino_icons: ^1.0.8
+  flutter_svg: ^2.0.10+1
+  cached_network_image: ^3.4.1
+  shimmer: ^3.0.0
+  lottie: ^3.1.2
+  fluttertoast: ^8.2.8
+
+  # Utils
+  intl: ^0.20.2
+  equatable: ^2.0.5
+  dartz: ^0.10.1
+  logger: ^2.4.0
+  connectivity_plus: ^6.1.0
+  package_info_plus: ^8.1.0
+  url_launcher: ^6.3.1
+  image_picker: ^1.1.2
+  permission_handler: ^11.3.1
+  flutter_dotenv: ^5.2.1
+  uuid: ^4.5.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  mockito: ^5.4.4
+  build_runner: ^2.4.13
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - .env
+
+  # fonts:
+  #   Uncomment and add Poppins font files to assets/fonts/ after downloading from:
+  #   https://fonts.google.com/specimen/Poppins
+  #   - family: Poppins
+  #     fonts:
+  #       - asset: assets/fonts/Poppins-Regular.ttf
+  #       - asset: assets/fonts/Poppins-Medium.ttf
+  #         weight: 500
+  #       - asset: assets/fonts/Poppins-SemiBold.ttf
+  #         weight: 600
+  #       - asset: assets/fonts/Poppins-Bold.ttf
+  #         weight: 700
