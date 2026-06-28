@@ -4,7 +4,7 @@
 
 **A production-ready Flutter starter template for senior-level applications.**
 
-[![CI](https://github.com/your-username/flutter_boilerplate/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/flutter_boilerplate/actions/workflows/ci.yml)
+[![CI](https://github.com/nikhilrpadhiyar/flutter_boilerplate/actions/workflows/ci.yml/badge.svg)](https://github.com/nikhilrpadhiyar/flutter_boilerplate/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Flutter](https://img.shields.io/badge/Flutter-3.11.5+-02569B?logo=flutter)](https://flutter.dev)
 [![GetX](https://img.shields.io/badge/GetX-4.6.6-blueviolet)](https://pub.dev/packages/get)
