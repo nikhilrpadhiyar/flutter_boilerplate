@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter_boilerplate/core/constants/app_constants.dart';
 import 'package:flutter_boilerplate/core/error/exceptions.dart';
 import 'package:flutter_boilerplate/core/storage/storage_service.dart';
@@ -7,10 +8,7 @@ import 'package:flutter_boilerplate/features/auth/data/models/user_model.dart';
 abstract class AuthLocalDataSource {
   Future<void> cacheUser(UserModel user);
   UserModel? getCachedUser();
-  Future<void> cacheTokens({
-    required String accessToken,
-    String? refreshToken,
-  });
+  Future<void> cacheTokens({required String accessToken, String? refreshToken});
   Future<void> clearAuthData();
 }
 
@@ -26,7 +24,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
   @override
   UserModel? getCachedUser() {
-    final raw = _storage.read<String>(AppConstants.keyUser);
+    final String? raw = _storage.read<String>(AppConstants.keyUser);
     if (raw == null) return null;
     try {
       return UserModel.fromJson(jsonDecode(raw) as Map<String, dynamic>);

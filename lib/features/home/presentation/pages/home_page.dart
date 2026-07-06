@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_boilerplate/core/constants/app_constants.dart';
 import 'package:flutter_boilerplate/core/constants/app_spacing.dart';
 import 'package:flutter_boilerplate/core/theme/app_colors.dart';
 import 'package:flutter_boilerplate/features/home/presentation/controllers/home_controller.dart';
 import 'package:flutter_boilerplate/routes/app_pages.dart';
+import 'package:get/get.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
@@ -14,7 +14,7 @@ class HomePage extends GetView<HomeController> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(AppConstants.appName),
-        actions: [
+        actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.settings_outlined),
             onPressed: () => Get.toNamed(AppRoutes.settings),
@@ -26,11 +26,8 @@ class HomePage extends GetView<HomeController> {
           padding: AppSpacing.screenPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Dashboard',
-                style: context.textTheme.headlineLarge,
-              ),
+            children: <Widget>[
+              Text('Dashboard', style: context.textTheme.headlineLarge),
               const SizedBox(height: AppSpacing.sm),
               Text(
                 'Welcome to the Flutter Boilerplate',
@@ -49,7 +46,7 @@ class HomePage extends GetView<HomeController> {
 }
 
 class _FeatureGrid extends StatelessWidget {
-  final _features = const [
+  final List<_FeatureItem> _features = const <_FeatureItem>[
     _FeatureItem(
       icon: Icons.architecture_rounded,
       label: 'Clean Architecture',
@@ -94,7 +91,7 @@ class _FeatureGrid extends StatelessWidget {
         childAspectRatio: 1.4,
       ),
       itemCount: _features.length,
-      itemBuilder: (_, i) => _FeatureCard(item: _features[i]),
+      itemBuilder: (_, int i) => _FeatureCard(item: _features[i]),
     );
   }
 }
@@ -124,7 +121,7 @@ class _FeatureCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+          children: <Widget>[
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
@@ -133,11 +130,7 @@ class _FeatureCard extends StatelessWidget {
               ),
               child: Icon(item.icon, color: item.color, size: 20),
             ),
-            Text(
-              item.label,
-              style: context.textTheme.labelLarge,
-              maxLines: 2,
-            ),
+            Text(item.label, style: context.textTheme.labelLarge, maxLines: 2),
           ],
         ),
       ),

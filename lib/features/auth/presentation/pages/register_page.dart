@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_boilerplate/core/constants/app_spacing.dart';
 import 'package:flutter_boilerplate/core/theme/app_colors.dart';
 import 'package:flutter_boilerplate/core/theme/app_text_styles.dart';
@@ -8,6 +7,7 @@ import 'package:flutter_boilerplate/features/auth/presentation/controllers/auth_
 import 'package:flutter_boilerplate/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:flutter_boilerplate/shared/widgets/app_button.dart';
 import 'package:flutter_boilerplate/shared/widgets/app_logo.dart';
+import 'package:get/get.dart';
 
 class RegisterPage extends GetView<AuthController> {
   const RegisterPage({super.key});
@@ -23,13 +23,10 @@ class RegisterPage extends GetView<AuthController> {
             key: controller.registerFormKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 const Center(child: AppLogo(size: 48)),
                 const SizedBox(height: AppSpacing.lg),
-                Text(
-                  'Create Account',
-                  style: context.textTheme.headlineLarge,
-                ),
+                Text('Create Account', style: context.textTheme.headlineLarge),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   'Fill in the details to get started',
@@ -42,7 +39,8 @@ class RegisterPage extends GetView<AuthController> {
                   controller: controller.nameController,
                   label: 'Full Name',
                   hint: 'Enter your full name',
-                  validator: (v) => Validators.required(v, field: 'Full Name'),
+                  validator: (String? v) =>
+                      Validators.required(v, field: 'Full Name'),
                   prefixIcon: const Icon(Icons.person_outline),
                 ),
                 const SizedBox(height: AppSpacing.md),
@@ -80,7 +78,7 @@ class RegisterPage extends GetView<AuthController> {
                     label: 'Confirm Password',
                     hint: 'Re-enter your password',
                     obscureText: !controller.isConfirmPasswordVisible.value,
-                    validator: (v) => Validators.confirmPassword(
+                    validator: (String? v) => Validators.confirmPassword(
                       v,
                       controller.passwordController.text,
                     ),
@@ -106,7 +104,7 @@ class RegisterPage extends GetView<AuthController> {
                 const SizedBox(height: AppSpacing.lg),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: <Widget>[
                     Text(
                       'Already have an account?',
                       style: context.textTheme.bodyMedium,

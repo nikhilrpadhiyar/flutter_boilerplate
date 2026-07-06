@@ -4,8 +4,11 @@ import 'package:logger/logger.dart';
 
 /// Logs requests and responses only in development builds.
 class LoggingInterceptor extends Interceptor {
-  final _logger = Logger(
-    printer: PrettyPrinter(methodCount: 0, printTime: true),
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      methodCount: 0,
+      dateTimeFormat: DateTimeFormat.dateAndTime,
+    ),
   );
 
   @override
@@ -21,7 +24,10 @@ class LoggingInterceptor extends Interceptor {
   }
 
   @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
+  void onResponse(
+    Response<dynamic> response,
+    ResponseInterceptorHandler handler,
+  ) {
     if (EnvConfig.isDevelopment) {
       _logger.d(
         '[${response.statusCode}] ${response.requestOptions.uri}\n'

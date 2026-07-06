@@ -1,11 +1,13 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_boilerplate/core/error/failures.dart';
 import 'package:flutter_boilerplate/features/auth/domain/entities/user_entity.dart';
+import 'package:flutter_boilerplate/features/auth/domain/repositories/auth_repository.dart';
 import 'package:flutter_boilerplate/features/auth/domain/usecases/login_usecase.dart';
 import 'package:flutter_boilerplate/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:flutter_boilerplate/features/auth/domain/usecases/register_usecase.dart';
-import 'package:flutter_boilerplate/features/auth/domain/repositories/auth_repository.dart';
 import 'package:flutter_boilerplate/routes/app_pages.dart';
+import 'package:get/get.dart';
 
 class AuthController extends GetxController {
   AuthController({
@@ -13,30 +15,31 @@ class AuthController extends GetxController {
     required RegisterUseCase registerUseCase,
     required LogoutUseCase logoutUseCase,
     required AuthRepository authRepository,
-  })  : _login = loginUseCase,
-        _register = registerUseCase,
-        _logout = logoutUseCase,
-        _repository = authRepository;
+  }) : _login = loginUseCase,
+       _register = registerUseCase,
+       _logout = logoutUseCase,
+       _repository = authRepository;
 
   final LoginUseCase _login;
   final RegisterUseCase _register;
   final LogoutUseCase _logout;
   final AuthRepository _repository;
 
-  final isLoading = false.obs;
+  final RxBool isLoading = false.obs;
   final Rx<UserEntity?> currentUser = Rx<UserEntity?>(null);
 
   // Form controllers
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final nameController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
-  final isPasswordVisible = false.obs;
-  final isConfirmPasswordVisible = false.obs;
+  final RxBool isPasswordVisible = false.obs;
+  final RxBool isConfirmPasswordVisible = false.obs;
 
-  final loginFormKey = GlobalKey<FormState>();
-  final registerFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
 
   @override
   void onInit() {
@@ -61,20 +64,20 @@ class AuthController extends GetxController {
   Future<void> loginUser() async {
     if (!loginFormKey.currentState!.validate()) return;
     isLoading.value = true;
-    final result = await _login(
+    final Either<Failure, UserEntity> result = await _login(
       email: emailController.text.trim(),
       password: passwordController.text,
     );
     isLoading.value = false;
     result.fold(
-      (failure) => Get.snackbar(
+      (Failure failure) => Get.snackbar(
         'Login Failed',
         failure.message,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Get.theme.colorScheme.error,
         colorText: Get.theme.colorScheme.onError,
       ),
-      (user) {
+      (UserEntity user) {
         currentUser.value = user;
         Get.offAllNamed(AppRoutes.home);
       },
@@ -84,21 +87,21 @@ class AuthController extends GetxController {
   Future<void> registerUser() async {
     if (!registerFormKey.currentState!.validate()) return;
     isLoading.value = true;
-    final result = await _register(
+    final Either<Failure, UserEntity> result = await _register(
       name: nameController.text.trim(),
       email: emailController.text.trim(),
       password: passwordController.text,
     );
     isLoading.value = false;
     result.fold(
-      (failure) => Get.snackbar(
+      (Failure failure) => Get.snackbar(
         'Registration Failed',
         failure.message,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Get.theme.colorScheme.error,
         colorText: Get.theme.colorScheme.onError,
       ),
-      (user) {
+      (UserEntity user) {
         currentUser.value = user;
         Get.offAllNamed(AppRoutes.home);
       },
@@ -107,15 +110,14 @@ class AuthController extends GetxController {
 
   Future<void> logoutUser() async {
     isLoading.value = true;
-    final result = await _logout();
+    final Either<Failure, void> result = await _logout();
     isLoading.value = false;
-    result.fold(
-      (failure) => Get.snackbar('Error', failure.message),
-      (_) {
-        currentUser.value = null;
-        Get.offAllNamed(AppRoutes.login);
-      },
-    );
+    result.fold((Failure failure) => Get.snackbar('Error', failure.message), (
+      _,
+    ) {
+      currentUser.value = null;
+      Get.offAllNamed(AppRoutes.login);
+    });
   }
 
   @override

@@ -17,60 +17,50 @@ class ApiClient {
   Dio get dio => _dio;
 
   void init(StorageService storage) {
-    _dio = Dio(
-      BaseOptions(
-        baseUrl: EnvConfig.apiBaseUrl,
-        connectTimeout: Duration(milliseconds: EnvConfig.apiTimeout),
-        receiveTimeout: Duration(milliseconds: EnvConfig.apiTimeout),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-      ),
-    )
-      ..interceptors.add(AuthInterceptor(storage))
-      ..interceptors.add(ErrorInterceptor())
-      ..interceptors.add(LoggingInterceptor());
+    _dio =
+        Dio(
+            BaseOptions(
+              baseUrl: EnvConfig.apiBaseUrl,
+              connectTimeout: Duration(milliseconds: EnvConfig.apiTimeout),
+              receiveTimeout: Duration(milliseconds: EnvConfig.apiTimeout),
+              headers: <String, dynamic>{
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              },
+            ),
+          )
+          ..interceptors.add(AuthInterceptor(storage))
+          ..interceptors.add(ErrorInterceptor())
+          ..interceptors.add(LoggingInterceptor());
   }
 
   Future<Response<T>> get<T>(
     String path, {
     Map<String, dynamic>? queryParameters,
     Options? options,
-  }) =>
-      _dio.get<T>(path, queryParameters: queryParameters, options: options);
+  }) => _dio.get<T>(path, queryParameters: queryParameters, options: options);
 
   Future<Response<T>> post<T>(
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
-  }) =>
-      _dio.post<T>(
-        path,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-      );
+  }) => _dio.post<T>(
+    path,
+    data: data,
+    queryParameters: queryParameters,
+    options: options,
+  );
 
-  Future<Response<T>> put<T>(
-    String path, {
-    dynamic data,
-    Options? options,
-  }) =>
+  Future<Response<T>> put<T>(String path, {dynamic data, Options? options}) =>
       _dio.put<T>(path, data: data, options: options);
 
   Future<Response<T>> delete<T>(
     String path, {
     dynamic data,
     Options? options,
-  }) =>
-      _dio.delete<T>(path, data: data, options: options);
+  }) => _dio.delete<T>(path, data: data, options: options);
 
-  Future<Response<T>> patch<T>(
-    String path, {
-    dynamic data,
-    Options? options,
-  }) =>
+  Future<Response<T>> patch<T>(String path, {dynamic data, Options? options}) =>
       _dio.patch<T>(path, data: data, options: options);
 }

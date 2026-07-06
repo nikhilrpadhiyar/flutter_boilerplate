@@ -28,11 +28,8 @@ class AuthTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: context.textTheme.labelLarge,
-        ),
+      children: <Widget>[
+        Text(label, style: context.textTheme.labelLarge),
         const SizedBox(height: 6),
         TextFormField(
           controller: controller,

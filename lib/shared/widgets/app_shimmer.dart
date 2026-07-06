@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:flutter_boilerplate/core/theme/app_colors.dart';
+import 'package:shimmer/shimmer.dart';
 
 class AppShimmer extends StatelessWidget {
-  const AppShimmer({
-    super.key,
-    required this.child,
-    this.enabled = true,
-  });
+  const AppShimmer({super.key, required this.child, this.enabled = true});
 
   final Widget child;
   final bool enabled;
@@ -15,7 +11,7 @@ class AppShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!enabled) return child;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Shimmer.fromColors(
       baseColor: isDark ? AppColors.grey800 : AppColors.grey200,
       highlightColor: isDark ? AppColors.grey600 : AppColors.grey100,

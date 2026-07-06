@@ -1,8 +1,8 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_boilerplate/features/auth/data/models/user_model.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final testJson = {
+  final Map<String, String?> testJson = <String, String?>{
     'id': 'user-123',
     'email': 'test@example.com',
     'name': 'Test User',
@@ -15,7 +15,7 @@ void main() {
 
   group('UserModel', () {
     test('fromJson parses all fields correctly', () {
-      final model = UserModel.fromJson(testJson);
+      final UserModel model = UserModel.fromJson(testJson);
       expect(model.id, 'user-123');
       expect(model.email, 'test@example.com');
       expect(model.name, 'Test User');
@@ -24,15 +24,15 @@ void main() {
     });
 
     test('toJson serialises without token fields', () {
-      final model = UserModel.fromJson(testJson);
-      final json = model.toJson();
+      final UserModel model = UserModel.fromJson(testJson);
+      final Map<String, dynamic> json = model.toJson();
       expect(json['id'], 'user-123');
       expect(json.containsKey('access_token'), isFalse);
     });
 
     test('copyWith updates only specified fields', () {
-      final model = UserModel.fromJson(testJson);
-      final updated = model.copyWith(name: 'Updated');
+      final UserModel model = UserModel.fromJson(testJson);
+      final UserModel updated = model.copyWith(name: 'Updated');
       expect(updated.name, 'Updated');
       expect(updated.email, model.email);
     });

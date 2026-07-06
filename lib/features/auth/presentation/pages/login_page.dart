@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_boilerplate/core/constants/app_spacing.dart';
 import 'package:flutter_boilerplate/core/theme/app_colors.dart';
 import 'package:flutter_boilerplate/core/theme/app_text_styles.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_boilerplate/features/auth/presentation/widgets/auth_text
 import 'package:flutter_boilerplate/routes/app_pages.dart';
 import 'package:flutter_boilerplate/shared/widgets/app_button.dart';
 import 'package:flutter_boilerplate/shared/widgets/app_logo.dart';
+import 'package:get/get.dart';
 
 class LoginPage extends GetView<AuthController> {
   const LoginPage({super.key});
@@ -23,14 +23,11 @@ class LoginPage extends GetView<AuthController> {
             key: controller.loginFormKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 const SizedBox(height: AppSpacing.xxl),
                 const Center(child: AppLogo()),
                 const SizedBox(height: AppSpacing.xl),
-                Text(
-                  'Welcome back',
-                  style: context.textTheme.headlineLarge,
-                ),
+                Text('Welcome back', style: context.textTheme.headlineLarge),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
                   'Sign in to your account',
@@ -90,7 +87,7 @@ class LoginPage extends GetView<AuthController> {
                 const SizedBox(height: AppSpacing.lg),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: <Widget>[
                     Text(
                       "Don't have an account?",
                       style: context.textTheme.bodyMedium,

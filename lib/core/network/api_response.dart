@@ -1,17 +1,5 @@
 /// Generic typed wrapper for all API responses.
 class ApiResponse<T> {
-  const ApiResponse({
-    required this.success,
-    required this.message,
-    this.data,
-    this.statusCode,
-  });
-
-  final bool success;
-  final String message;
-  final T? data;
-  final int? statusCode;
-
   factory ApiResponse.fromJson(
     Map<String, dynamic> json,
     T Function(dynamic)? fromJsonT,
@@ -25,4 +13,15 @@ class ApiResponse<T> {
       statusCode: json['statusCode'] as int?,
     );
   }
+  const ApiResponse({
+    required this.success,
+    required this.message,
+    this.data,
+    this.statusCode,
+  });
+
+  final bool success;
+  final String message;
+  final T? data;
+  final int? statusCode;
 }

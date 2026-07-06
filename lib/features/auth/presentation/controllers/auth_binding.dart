@@ -1,5 +1,5 @@
-import 'package:get/get.dart';
 import 'package:flutter_boilerplate/core/network/api_client.dart';
+import 'package:flutter_boilerplate/core/storage/storage_service.dart';
 import 'package:flutter_boilerplate/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:flutter_boilerplate/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:flutter_boilerplate/features/auth/data/repositories/auth_repository_impl.dart';
@@ -7,20 +7,18 @@ import 'package:flutter_boilerplate/features/auth/domain/usecases/login_usecase.
 import 'package:flutter_boilerplate/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:flutter_boilerplate/features/auth/domain/usecases/register_usecase.dart';
 import 'package:flutter_boilerplate/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:flutter_boilerplate/core/storage/storage_service.dart';
+import 'package:get/get.dart';
 
 class AuthBinding extends Bindings {
   @override
   void dependencies() {
-    final storage = Get.find<StorageService>();
-    final apiClient = Get.find<ApiClient>();
+    final StorageService storage = Get.find<StorageService>();
+    final ApiClient apiClient = Get.find<ApiClient>();
 
     Get.lazyPut<AuthRemoteDataSource>(
       () => AuthRemoteDataSourceImpl(apiClient),
     );
-    Get.lazyPut<AuthLocalDataSource>(
-      () => AuthLocalDataSourceImpl(storage),
-    );
+    Get.lazyPut<AuthLocalDataSource>(() => AuthLocalDataSourceImpl(storage));
     Get.lazyPut<AuthRepositoryImpl>(
       () => AuthRepositoryImpl(
         remoteDataSource: Get.find<AuthRemoteDataSource>(),
@@ -28,7 +26,7 @@ class AuthBinding extends Bindings {
       ),
     );
 
-    final repo = Get.find<AuthRepositoryImpl>();
+    final AuthRepositoryImpl repo = Get.find<AuthRepositoryImpl>();
 
     Get.lazyPut(() => LoginUseCase(repo));
     Get.lazyPut(() => RegisterUseCase(repo));

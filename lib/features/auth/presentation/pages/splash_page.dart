@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_boilerplate/core/constants/app_constants.dart';
 import 'package:flutter_boilerplate/core/theme/app_colors.dart';
 import 'package:flutter_boilerplate/core/theme/app_text_styles.dart';
 import 'package:flutter_boilerplate/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:get/get.dart';
 
 class SplashPage extends GetView<AuthController> {
   const SplashPage({super.key});
@@ -15,7 +15,7 @@ class SplashPage extends GetView<AuthController> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             const Icon(
               Icons.rocket_launch_rounded,
               size: 72,

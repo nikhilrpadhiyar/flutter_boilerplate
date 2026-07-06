@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_boilerplate/core/constants/app_spacing.dart';
 import 'package:flutter_boilerplate/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:flutter_boilerplate/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:get/get.dart';
 
 class SettingsPage extends GetView<SettingsController> {
   const SettingsPage({super.key});
@@ -13,7 +13,7 @@ class SettingsPage extends GetView<SettingsController> {
       appBar: AppBar(title: const Text('Settings')),
       body: ListView(
         padding: AppSpacing.screenPadding,
-        children: [
+        children: <Widget>[
           _SectionHeader(title: 'Appearance'),
           Obx(
             () => SwitchListTile(
@@ -82,7 +82,7 @@ class _LanguageTile extends StatelessWidget {
   final String selected;
   final ValueChanged<String> onChanged;
 
-  static const _locales = [
+  static const List<(String, String)> _locales = <(String, String)>[
     ('English', 'en'),
     ('Hindi', 'hi'),
     ('Spanish', 'es'),
@@ -93,11 +93,11 @@ class _LanguageTile extends StatelessWidget {
     return Column(
       children: _locales
           .map(
-            (l) => RadioListTile<String>(
+            ((String, String) l) => RadioListTile<String>(
               title: Text(l.$1),
               value: l.$2,
               groupValue: selected,
-              onChanged: (v) => onChanged(v!),
+              onChanged: (String? v) => onChanged(v!),
             ),
           )
           .toList(),

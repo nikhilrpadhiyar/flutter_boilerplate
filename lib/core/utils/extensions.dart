@@ -21,9 +21,10 @@ extension ContextExtensions on BuildContext {
 
 extension DateTimeExtensions on DateTime {
   String get formatted => DateFormat('dd MMM yyyy').format(this);
-  String get formattedWithTime => DateFormat('dd MMM yyyy, hh:mm a').format(this);
+  String get formattedWithTime =>
+      DateFormat('dd MMM yyyy, hh:mm a').format(this);
   String get timeAgo {
-    final diff = DateTime.now().difference(this);
+    final Duration diff = DateTime.now().difference(this);
     if (diff.inSeconds < 60) return '${diff.inSeconds}s ago';
     if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
     if (diff.inHours < 24) return '${diff.inHours}h ago';

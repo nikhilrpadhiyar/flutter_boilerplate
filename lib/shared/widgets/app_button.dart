@@ -25,7 +25,7 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final child = isLoading
+    final RenderObjectWidget child = isLoading
         ? const SizedBox.square(
             dimension: 22,
             child: CircularProgressIndicator(
@@ -35,8 +35,8 @@ class AppButton extends StatelessWidget {
           )
         : Row(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              if (icon != null) ...[
+            children: <Widget>[
+              if (icon != null) ...<Widget>[
                 Icon(icon, size: 18),
                 const SizedBox(width: 8),
               ],
@@ -49,17 +49,17 @@ class AppButton extends StatelessWidget {
       height: height,
       child: switch (variant) {
         AppButtonVariant.filled => ElevatedButton(
-            onPressed: isLoading ? null : onPressed,
-            child: child,
-          ),
+          onPressed: isLoading ? null : onPressed,
+          child: child,
+        ),
         AppButtonVariant.outlined => OutlinedButton(
-            onPressed: isLoading ? null : onPressed,
-            child: child,
-          ),
+          onPressed: isLoading ? null : onPressed,
+          child: child,
+        ),
         AppButtonVariant.text => TextButton(
-            onPressed: isLoading ? null : onPressed,
-            child: child,
-          ),
+          onPressed: isLoading ? null : onPressed,
+          child: child,
+        ),
       },
     );
   }

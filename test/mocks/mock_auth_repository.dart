@@ -12,13 +12,12 @@ class MockAuthRepository extends Mock implements AuthRepository {
   Future<Either<Failure, UserEntity>> login({
     required String email,
     required String password,
-  }) async =>
-      Right(
-        UserEntity(
-          id: 'mock-id',
-          email: email,
-          name: 'Mock User',
-          createdAt: DateTime(2024),
-        ),
-      );
+  }) async => Right<Failure, UserEntity>(
+    UserEntity(
+      id: 'mock-id',
+      email: email,
+      name: 'Mock User',
+      createdAt: DateTime(2024),
+    ),
+  );
 }

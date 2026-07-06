@@ -15,7 +15,7 @@ class ErrorInterceptor extends Interceptor {
         );
 
       case DioExceptionType.badResponse:
-        final statusCode = err.response?.statusCode ?? 0;
+        final int statusCode = err.response?.statusCode ?? 0;
         if (statusCode == 401) {
           throw UnauthorizedException();
         }

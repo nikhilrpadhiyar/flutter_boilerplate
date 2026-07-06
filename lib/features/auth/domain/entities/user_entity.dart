@@ -18,5 +18,12 @@ class UserEntity extends Equatable {
   final DateTime createdAt;
 
   @override
-  List<Object?> get props => [id, email, name, avatarUrl, phoneNumber, createdAt];
+  List<Object?> get props => <Object?>[
+    id,
+    email,
+    name,
+    avatarUrl,
+    phoneNumber,
+    createdAt,
+  ];
 }

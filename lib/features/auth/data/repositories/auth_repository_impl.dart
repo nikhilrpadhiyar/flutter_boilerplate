@@ -3,6 +3,7 @@ import 'package:flutter_boilerplate/core/error/exceptions.dart';
 import 'package:flutter_boilerplate/core/error/failures.dart';
 import 'package:flutter_boilerplate/features/auth/data/datasources/auth_local_datasource.dart';
 import 'package:flutter_boilerplate/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:flutter_boilerplate/features/auth/data/models/user_model.dart';
 import 'package:flutter_boilerplate/features/auth/domain/entities/user_entity.dart';
 import 'package:flutter_boilerplate/features/auth/domain/repositories/auth_repository.dart';
 
@@ -10,8 +11,8 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({
     required AuthRemoteDataSource remoteDataSource,
     required AuthLocalDataSource localDataSource,
-  })  : _remote = remoteDataSource,
-        _local = localDataSource;
+  }) : _remote = remoteDataSource,
+       _local = localDataSource;
 
   final AuthRemoteDataSource _remote;
   final AuthLocalDataSource _local;
@@ -25,7 +26,10 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
   }) async {
     try {
-      final user = await _remote.login(email: email, password: password);
+      final UserModel user = await _remote.login(
+        email: email,
+        password: password,
+      );
       await _local.cacheUser(user);
       if (user.accessToken != null) {
         await _local.cacheTokens(
@@ -33,13 +37,15 @@ class AuthRepositoryImpl implements AuthRepository {
           refreshToken: user.refreshToken,
         );
       }
-      return Right(user);
+      return Right<Failure, UserEntity>(user);
     } on UnauthorizedException catch (e) {
-      return Left(UnauthorizedFailure(message: e.message));
+      return Left<Failure, UserEntity>(UnauthorizedFailure(message: e.message));
     } on ApiException catch (e) {
-      return Left(ApiFailure(message: e.message, statusCode: e.statusCode));
+      return Left<Failure, UserEntity>(
+        ApiFailure(message: e.message, statusCode: e.statusCode),
+      );
     } on NetworkException catch (e) {
-      return Left(NetworkFailure(message: e.message));
+      return Left<Failure, UserEntity>(NetworkFailure(message: e.message));
     }
   }
 
@@ -50,7 +56,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
   }) async {
     try {
-      final user = await _remote.register(
+      final UserModel user = await _remote.register(
         name: name,
         email: email,
         password: password,
@@ -62,11 +68,13 @@ class AuthRepositoryImpl implements AuthRepository {
           refreshToken: user.refreshToken,
         );
       }
-      return Right(user);
+      return Right<Failure, UserEntity>(user);
     } on ApiException catch (e) {
-      return Left(ApiFailure(message: e.message, statusCode: e.statusCode));
+      return Left<Failure, UserEntity>(
+        ApiFailure(message: e.message, statusCode: e.statusCode),
+      );
     } on NetworkException catch (e) {
-      return Left(NetworkFailure(message: e.message));
+      return Left<Failure, UserEntity>(NetworkFailure(message: e.message));
     }
   }
 
@@ -75,26 +83,26 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       await _remote.logout();
       await _local.clearAuthData();
-      return const Right(null);
+      return const Right<Failure, void>(null);
     } on AppException catch (e) {
       // Still clear local data even if remote call fails
       await _local.clearAuthData();
-      return Left(ApiFailure(message: e.message));
+      return Left<Failure, void>(ApiFailure(message: e.message));
     }
   }
 
   @override
   Future<Either<Failure, UserEntity>> getCurrentUser() async {
     try {
-      final cached = _local.getCachedUser();
-      if (cached != null) return Right(cached);
-      final user = await _remote.getCurrentUser();
+      final UserModel? cached = _local.getCachedUser();
+      if (cached != null) return Right<Failure, UserEntity>(cached);
+      final UserModel user = await _remote.getCurrentUser();
       await _local.cacheUser(user);
-      return Right(user);
+      return Right<Failure, UserEntity>(user);
     } on CacheException catch (e) {
-      return Left(CacheFailure(message: e.message));
+      return Left<Failure, UserEntity>(CacheFailure(message: e.message));
     } on ApiException catch (e) {
-      return Left(ApiFailure(message: e.message));
+      return Left<Failure, UserEntity>(ApiFailure(message: e.message));
     }
   }
 
@@ -102,11 +110,11 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, void>> forgotPassword({required String email}) async {
     try {
       await _remote.forgotPassword(email: email);
-      return const Right(null);
+      return const Right<Failure, void>(null);
     } on ApiException catch (e) {
-      return Left(ApiFailure(message: e.message));
+      return Left<Failure, void>(ApiFailure(message: e.message));
     } on NetworkException catch (e) {
-      return Left(NetworkFailure(message: e.message));
+      return Left<Failure, void>(NetworkFailure(message: e.message));
     }
   }
 }

@@ -16,7 +16,7 @@ import 'package:get_storage/get_storage.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await SystemChrome.setPreferredOrientations([
+  await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
@@ -24,23 +24,22 @@ Future<void> main() async {
   await dotenv.load();
   await GetStorage.init();
 
-  final storage = StorageService(GetStorage());
+  final StorageService storage = StorageService(GetStorage());
   Get.put<StorageService>(storage, permanent: true);
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   ApiClient.instance.init(storage);
   Get.put<ApiClient>(ApiClient.instance, permanent: true);
 
-  final savedTheme = storage.read<String>(AppConstants.keyThemeMode);
-  final themeMode = savedTheme == 'dark' ? ThemeMode.dark : ThemeMode.light;
-  final savedLang = storage.read<String>(AppConstants.keyLanguage) ?? 'en';
+  final String? savedTheme = storage.read<String>(AppConstants.keyThemeMode);
+  final ThemeMode themeMode = savedTheme == 'dark'
+      ? ThemeMode.dark
+      : ThemeMode.light;
+  final String savedLang =
+      storage.read<String>(AppConstants.keyLanguage) ?? 'en';
 
-  runApp(
-    BoilerplateApp(themeMode: themeMode, locale: Locale(savedLang)),
-  );
+  runApp(BoilerplateApp(themeMode: themeMode, locale: Locale(savedLang)));
 }
 
 class BoilerplateApp extends StatelessWidget {
@@ -63,12 +62,12 @@ class BoilerplateApp extends StatelessWidget {
       themeMode: themeMode,
       locale: locale,
       fallbackLocale: const Locale('en'),
-      localizationsDelegates: const [
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
+      supportedLocales: const <Locale>[
         Locale('en'),
         Locale('hi'),
         Locale('es'),

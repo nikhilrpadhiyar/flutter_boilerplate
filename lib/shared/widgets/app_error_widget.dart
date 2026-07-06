@@ -20,7 +20,7 @@ class AppErrorWidget extends StatelessWidget {
         padding: AppSpacing.screenPadding,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             const Icon(
               Icons.error_outline_rounded,
               size: 64,
@@ -32,7 +32,7 @@ class AppErrorWidget extends StatelessWidget {
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            if (onRetry != null) ...[
+            if (onRetry != null) ...<Widget>[
               const SizedBox(height: AppSpacing.lg),
               AppButton(
                 label: 'Try Again',

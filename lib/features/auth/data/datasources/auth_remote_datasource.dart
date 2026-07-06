@@ -1,3 +1,4 @@
+import 'package:dio/src/response.dart';
 import 'package:flutter_boilerplate/core/error/exceptions.dart';
 import 'package:flutter_boilerplate/core/network/api_client.dart';
 import 'package:flutter_boilerplate/features/auth/data/models/user_model.dart';
@@ -28,11 +29,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String email,
     required String password,
   }) async {
-    final response = await _apiClient.post(
+    final Response<dynamic> response = await _apiClient.post(
       '/auth/login',
-      data: {'email': email, 'password': password},
+      data: <String, String>{'email': email, 'password': password},
     );
-    if (response.data == null) throw const ApiException(message: 'Empty response from server.');
+    if (response.data == null) {
+      throw const ApiException(message: 'Empty response from server.');
+    }
     return UserModel.fromJson(response.data as Map<String, dynamic>);
   }
 
@@ -42,11 +45,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String email,
     required String password,
   }) async {
-    final response = await _apiClient.post(
+    final Response<dynamic> response = await _apiClient.post(
       '/auth/register',
-      data: {'name': name, 'email': email, 'password': password},
+      data: <String, String>{
+        'name': name,
+        'email': email,
+        'password': password,
+      },
     );
-    if (response.data == null) throw const ApiException(message: 'Empty response from server.');
+    if (response.data == null) {
+      throw const ApiException(message: 'Empty response from server.');
+    }
     return UserModel.fromJson(response.data as Map<String, dynamic>);
   }
 
@@ -55,12 +64,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<UserModel> getCurrentUser() async {
-    final response = await _apiClient.get('/auth/me');
-    if (response.data == null) throw const ApiException(message: 'Empty response from server.');
+    final Response<dynamic> response = await _apiClient.get('/auth/me');
+    if (response.data == null) {
+      throw const ApiException(message: 'Empty response from server.');
+    }
     return UserModel.fromJson(response.data as Map<String, dynamic>);
   }
 
   @override
-  Future<void> forgotPassword({required String email}) =>
-      _apiClient.post('/auth/forgot-password', data: {'email': email});
+  Future<void> forgotPassword({required String email}) => _apiClient.post(
+    '/auth/forgot-password',
+    data: <String, String>{'email': email},
+  );
 }
